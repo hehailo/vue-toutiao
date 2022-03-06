@@ -15,7 +15,18 @@ import { Button } from 'vant';
 import { NavBar } from 'vant';
 import { Toast } from 'vant';
 import { CountDown } from 'vant';
+import { Tabbar, TabbarItem } from 'vant';
+import { Image as VanImage } from 'vant';
+import { Grid, GridItem } from 'vant';
+import { Cell, CellGroup } from 'vant';
 
+Vue.use(Cell);
+Vue.use(CellGroup);
+Vue.use(Grid);
+Vue.use(GridItem);
+Vue.use(VanImage);
+Vue.use(Tabbar);
+Vue.use(TabbarItem);
 Vue.use(CountDown);
 Vue.use(Toast);
 Vue.use(NavBar);
