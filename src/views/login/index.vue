@@ -1,7 +1,9 @@
 <template>
   <div class="login-container">
     <!-- 导航栏 -->
-    <van-nav-bar title="登录" class="page-nav-bar" />
+    <van-nav-bar title="登录" class="page-nav-bar">
+        <van-icon slot="left" name="cross" size="18"  @click="$router.back()"/>
+    </van-nav-bar>
 
     <!-- 登录表单 -->
     <van-form @submit="onSubmit" ref="loginForm">
@@ -55,7 +57,7 @@
 </template>
 
 <script>
-import { login,sendSms } from "@/api/user";
+import { login, sendSms } from "@/api/user";
 export default {
   name: "Login",
   data() {
@@ -104,8 +106,9 @@ export default {
       // 发送请求
       try {
         let result = await login(user);
-        this.$store.commit("USERTOKEN",result.data.data);
+        this.$store.commit("USERTOKEN", result.data);
         this.$toast.success("登陆成功");
+        this.$router.back();
       } catch (error) {
         if (error) {
           this.$toast.fail("手机号或验证码错误");
@@ -141,18 +144,18 @@ export default {
 
       // 3. 请求发送验证码
       try {
-        await sendSms(this.user.mobile)
-        this.$toast('发送成功')
+        await sendSms(this.user.mobile);
+        this.$toast("发送成功");
       } catch (err) {
         // 发送失败，关闭倒计时
-        this.isCountDownShow = false
+        this.isCountDownShow = false;
         if (err.response.status === 429) {
-          this.$toast('发送太频繁了，请稍后重试')
+          this.$toast("发送太频繁了，请稍后重试");
         } else {
-          this.$toast('发送失败，请稍后重试')
+          this.$toast("发送失败，请稍后重试");
         }
       }
-    }
+    },
   },
 };
 </script>

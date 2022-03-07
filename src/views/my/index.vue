@@ -1,15 +1,7 @@
 <template>
   <div class="my-container">
-    <!-- 未登录 头部-->
-    <div class="header not-login">
-      <div class="login-btn" @click="$router.push('/login')">
-        <img class="mobile-img" src="~@/assets/mobile.png" alt="" />
-        <span class="text">登录 / 注册</span>
-      </div>
-    </div>
-
     <!-- 已登录 头部 -->
-    <div class="header user-info">
+    <div class="header user-info" v-if="loginToken">
       <div class="base-info">
         <div class="left">
           <van-image
@@ -26,21 +18,29 @@
       </div>
       <div class="data-stats">
         <div class="data-item">
-          <span class="count">1000</span>
+          <span class="count">{{ userInfo.art_count }}</span>
           <span class="text">头条</span>
         </div>
         <div class="data-item">
-          <span class="count">1000</span>
+          <span class="count">{{ userInfo.follow_count }}</span>
           <span class="text">关注</span>
         </div>
         <div class="data-item">
-          <span class="count">1000</span>
+          <span class="count">{{ userInfo.fans_count }}</span>
           <span class="text">粉丝</span>
         </div>
         <div class="data-item">
-          <span class="count">1000</span>
+          <span class="count">{{ userInfo.like_count }}</span>
           <span class="text">获赞</span>
         </div>
+      </div>
+    </div>
+
+    <!-- 未登录 头部-->
+    <div class="header not-login" v-else>
+      <div class="login-btn" @click="$router.push('/login')">
+        <img class="mobile-img" src="~@/assets/mobile.png" alt="" />
+        <span class="text">登录 / 注册</span>
       </div>
     </div>
 
@@ -59,23 +59,64 @@
     <!-- 消息通知 -->
     <van-cell title="消息通知" is-link />
     <van-cell title="小智同学" is-link class="mb-9" />
-    <van-cell title="退出登录" class="logout-cell" clickable />
+    <!-- 退出按钮 -->
+    <van-cell
+      v-if="loginToken"
+      title="退出登录"
+      @click="onLogout"
+      class="logout-cell"
+      clickable
+    />
   </div>
 </template>
 
 <script>
+import { getUserInfo } from "@/api/user";
+import { mapState } from "vuex";
 export default {
   name: "my",
   data() {
     return {
-      msg: "",
+      userInfo: {},
     };
   },
-  watch: {},
-  mounted() {},
-  methods: {},
-  filters: {},
-  components: {},
+  created() {
+    if (this.loginToken) {
+      this.loadUserInfo();
+    }
+  },
+  computed: {
+    ...mapState({
+      loginToken: (state) => state.user.loginToken,
+    }),
+  },
+  methods: {
+    // 退出
+    onLogout() {
+      this.$dialog
+        .confirm({
+          title: "确认退出吗？",
+        })
+        .then(() => {
+          // on confirm
+          console.log("用户退出");
+          this.$store.commit("USERTOKEN", null);
+        })
+        .catch(() => {
+          // on cancel
+          console.log("取消退出");
+        });
+    },
+    // 获取用户信息
+    async loadUserInfo() {
+      try {
+        let { data } = await getUserInfo();
+        this.userInfo = data;
+      } catch (error) {
+        this.$toast.fail("获取数据失败，请稍后重试");
+      }
+    },
+  },
 };
 </script>
 
@@ -130,6 +171,11 @@ export default {
           font-size: 30px;
           color: #fff;
         }
+      }
+      .right {
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
     .data-stats {

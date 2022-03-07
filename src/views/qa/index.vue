@@ -4,7 +4,6 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
 export default {
   name: 'qa',
   data () {
@@ -12,15 +11,11 @@ export default {
       msg: ''
     }
   },
-  computed: {
-    ...mapState([''])
-  },
   watch: {
   },
   mounted () {
   },
   methods: {
-    ...mapMutations([''])
   },
   filters: {
   },

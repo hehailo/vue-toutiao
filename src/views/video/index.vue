@@ -4,24 +4,17 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
 export default {
-  name: 'video',
+  name: 'movie',
   data () {
     return {
-      msg: ''
     }
-  },
-  computed: {
-    ...mapState([''])
   },
   watch: {
   },
   mounted () {
   },
-  methods: {
-    ...mapMutations([''])
-  },
+
   filters: {
   },
   components: {

@@ -20,14 +20,14 @@
       </van-tabbar-item>
       <van-tabbar-item to="/my">
         <i slot="icon" class="iconfont icon-31wode"></i>
-        <span class="text">我的</span>
+        <span class="text">{{$store.state.user.userInfo ? "我的":"未登录"}}</span>
       </van-tabbar-item>
     </van-tabbar>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
+import { mapState } from "vuex";
 export default {
   name: "layout",
   data() {
@@ -37,9 +37,6 @@ export default {
   },
   watch: {},
   mounted() {},
-  methods: {
-    ...mapMutations([""]),
-  },
   filters: {},
   components: {},
 };

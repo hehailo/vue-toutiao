@@ -19,7 +19,14 @@ import { Tabbar, TabbarItem } from 'vant';
 import { Image as VanImage } from 'vant';
 import { Grid, GridItem } from 'vant';
 import { Cell, CellGroup } from 'vant';
+import { Icon } from 'vant';
+import { Dialog } from 'vant';
+import { Tab, Tabs } from 'vant';
 
+Vue.use(Tab);
+Vue.use(Tabs);
+Vue.use(Dialog);
+Vue.use(Icon);
 Vue.use(Cell);
 Vue.use(CellGroup);
 Vue.use(Grid);
