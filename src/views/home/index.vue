@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
     <!-- 导航栏 -->
-    <van-nav-bar class="page-nav-bar">
+    <van-nav-bar class="page-nav-bar" fixed>
       <!-- 按钮 -->
       <van-button
         class="search-btn"
@@ -25,8 +25,10 @@
         v-for="channel in channels"
         :key="channel.id"
         :title="channel.name"
-        >{{ channel.name }}内容 1</van-tab
       >
+        <!-- 文章列表 -->
+        <ArticleList :channel="channel" />
+      </van-tab>
       <!-- 占位 -->
       <div slot="nav-right" class="placeholder"></div>
       <!-- 汉按钮 -->
@@ -39,6 +41,7 @@
 
 <script>
 import { getUserChannels } from "@/api/user";
+import ArticleList from "./components/ArticleList.vue";
 export default {
   name: "home",
   data() {
@@ -62,11 +65,17 @@ export default {
       }
     },
   },
+  components: {
+    ArticleList,
+  },
 };
 </script>
 
 <style scoped lang="less">
 .home-container {
+  margin-bottom: 100px;
+  padding-top: 174px;
+
   /deep/ .van-nav-bar__title {
     max-width: unset !important;
   }
@@ -85,7 +94,7 @@ export default {
 /deep/ .channel-tabs {
   .van-tab {
     border-right: 1px solid #edeff3;
-    min-width: 200px;
+    min-width: 225px;
     font-size: 30px;
     color: #777777;
   }
@@ -94,13 +103,26 @@ export default {
     color: #333333;
   }
 
+  .van-tabs__wrap {
+    position: fixed;
+    top: 92px;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    height: 82px;
+  }
+
   .van-tabs__nav {
     padding-bottom: 0;
   }
 
+  .van-tabs__nav--line.van-tabs__nav--complete {
+    padding: 0;
+  }
+
   .van-tabs__line {
     bottom: 8px;
-    width: 31px !important;
+    width:36px !important;
     height: 6px;
     background-color: #3296fa;
   }
