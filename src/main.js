@@ -8,6 +8,9 @@ import './styles/index.less'
 // 移动端适配
 import 'amfe-flexible'
 
+// 引入dayjs
+import '@/utils/dayjs'
+
 // 引入vant
 import { Form } from 'vant';
 import { Field } from 'vant';
@@ -24,7 +27,11 @@ import { Dialog } from 'vant';
 import { Tab, Tabs } from 'vant';
 import { List } from 'vant';
 import { PullRefresh } from 'vant';
+import { Popup } from 'vant';
+import { Search } from 'vant';
 
+Vue.use(Search);
+Vue.use(Popup);
 Vue.use(PullRefresh);
 Vue.use(List)
 Vue.use(Tab);

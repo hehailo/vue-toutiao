@@ -20,7 +20,7 @@
       </van-tabbar-item>
       <van-tabbar-item to="/my">
         <i slot="icon" class="iconfont icon-31wode"></i>
-        <span class="text">{{$store.state.user.userInfo ? "我的":"未登录"}}</span>
+        <span class="text">{{$store.state.user.loginToken ? "我的":"未登录"}}</span>
       </van-tabbar-item>
     </van-tabbar>
   </div>

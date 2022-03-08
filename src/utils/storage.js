@@ -6,8 +6,10 @@
  * 存储数据
  */
 export const setItem = (key, value) => {
+  console.log(value);
+  console.log(typeof value );
   //函数体
-  if (typeof value == "object ") {
+  if (typeof value == "object") {
     value = JSON.stringify(value);
   }
   window.localStorage.setItem(key, value);
@@ -20,6 +22,7 @@ export const setItem = (key, value) => {
 export const getItem = (key) => {
   //函数体
   let data = window.localStorage.getItem(key);
+  console.log(data);
   try {
     return JSON.parse(data);
   } catch (error) {

@@ -10,6 +10,7 @@
         size="small"
         round
         icon="search"
+        to="/search"
         >搜索</van-button
       >
     </van-nav-bar>
@@ -31,42 +32,96 @@
       </van-tab>
       <!-- 占位 -->
       <div slot="nav-right" class="placeholder"></div>
-      <!-- 汉按钮 -->
-      <div slot="nav-right" class="hamburger-btn">
+      <!-- 汉堡按钮 -->
+      <div
+        slot="nav-right"
+        class="hamburger-btn"
+        @click="isChennelEditShow = true"
+      >
         <i class="iconfont icon-gengduo"></i>
       </div>
     </van-tabs>
+
+    <!-- 频道编辑弹出层 -->
+    <van-popup
+      v-model="isChennelEditShow"
+      closeable
+      close-icon-position="top-left"
+      position="bottom"
+      :style="{ height: '100%' }"
+    >
+      <!-- 
+      channels 传递我的频道给频道编辑弹窗
+      update-active 子组件改变当前频道
+     -->
+      <ChannelEdit
+        :myChannels="channels"
+        :active="active"
+        @update-active="onUpdateActive"
+      ></ChannelEdit>
+    </van-popup>
   </div>
 </template>
 
 <script>
 import { getUserChannels } from "@/api/user";
 import ArticleList from "./components/ArticleList.vue";
+import ChannelEdit from "./components/ChannelEdit.vue";
+import { mapState } from "vuex";
+import { getItem } from "@/utils/storage";
 export default {
   name: "home",
   data() {
     return {
       active: 0,
       channels: [],
+      isChennelEditShow: false,
     };
   },
+  components: {
+    ArticleList,
+    ChannelEdit,
+  },
   created() {
-    console.log("122323");
     this.loadChannels();
+  },
+  computed: {
+    ...mapState({
+      loginToken: (state) => state.user.loginToken,
+    }),
   },
   methods: {
     async loadChannels() {
       try {
-        let { data } = await getUserChannels();
-        console.log(data);
-        this.channels = data.channels;
+        let channels = [];
+        if (this.loginToken) {
+          // 已登录，请求获取用户频道列表
+          let { data } = await getUserChannels();
+          console.log("已登录", data);
+          this.channels = data.channels;
+        } else {
+          // 未登录，判断是否有本地的频道列表数据
+          const localChannels = getItem("TOUTIAO_CHANNELS");
+          console.log(localChannels);
+          if (localChannels) {
+            channels = localChannels;
+          } else {
+            let { data } = await getUserChannels();
+            console.log("未登录", data);
+            channels = data.channels;
+          }
+        }
+        this.channels = channels;
       } catch (error) {
         this.$toast.fail("获取频道数据失败");
       }
     },
-  },
-  components: {
-    ArticleList,
+    onUpdateActive(newIndex, isChennelEditShow = true) {
+      // 更新选中频道
+      this.active = newIndex;
+      // 挂壁编辑频道弹层
+      this.isChennelEditShow = isChennelEditShow;
+    },
   },
 };
 </script>
@@ -94,7 +149,7 @@ export default {
 /deep/ .channel-tabs {
   .van-tab {
     border-right: 1px solid #edeff3;
-    min-width: 225px;
+    min-width: 228px;
     font-size: 30px;
     color: #777777;
   }
@@ -122,7 +177,7 @@ export default {
 
   .van-tabs__line {
     bottom: 8px;
-    width:36px !important;
+    width: 36px !important;
     height: 6px;
     background-color: #3296fa;
   }

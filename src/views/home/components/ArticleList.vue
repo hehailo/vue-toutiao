@@ -14,11 +14,16 @@
         error-text="请求失败，点击重新加载"
         @load="onLoad"
       >
-        <van-cell
+        <!-- <van-cell
           v-for="(article, index) in list"
           :key="index"
           :title="article.title"
-        />
+        /> -->
+        <ArticleItem
+          v-for="(article, index) in list"
+          :key="index"
+          :article="article"
+        ></ArticleItem>
       </van-list>
     </van-pull-refresh>
   </div>
@@ -26,6 +31,7 @@
 
 <script>
 import { getArticles } from "@/api/article";
+import ArticleItem from "@/components/ArticleItem";
 export default {
   name: "ArticleList",
   data() {
@@ -39,6 +45,7 @@ export default {
       refreshSuccessText: "刷新成功", // 下拉刷新成功提示文本
     };
   },
+  components: { ArticleItem },
   props: {
     channel: {
       type: Object,
@@ -62,7 +69,7 @@ export default {
         let { results, pre_timestamp } = data;
 
         // 模拟随机失败的情况
-        if (Math.random() > 0.5) {
+        if (Math.random() > 0.8) {
           JSON.parse("fsfsf");
         }
 
@@ -99,7 +106,7 @@ export default {
         let { results } = data;
 
         // 模拟随机失败的情况
-        if (Math.random() > 0.5) {
+        if (Math.random() > 0.8) {
           JSON.parse("fsfsf");
         }
         console.log(data.results);
@@ -111,9 +118,7 @@ export default {
         this.isreFreshLoading = false;
         // 更新下拉刷新成功提示的文本
         this.refreshSuccessText = `刷新成功，更新了${results.length}条数据`;
-
       } catch (error) {
-
         // 关闭下拉刷新的 loading 状态
         this.isreFreshLoading = false;
         this.refreshSuccessText = "刷新失败";
@@ -124,7 +129,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.article-list{
+.article-list {
   height: 83vh;
   overflow-y: auto;
 }
