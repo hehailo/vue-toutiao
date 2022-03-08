@@ -3,9 +3,21 @@
  */
 import axios from "axios";
 import store from "@/store";
+import JSONBig from "json-bigint";
 
 const request = axios.create({
   baseURL: "http://toutiao.itheima.net/",
+ // `transformResponse` 在传递给 then/catch 前，允许修改响应数据
+  transformResponse: [
+    function (data) {
+      // 对 data 进行任意转换处理
+      try {
+        return JSONBig.parse(data);
+      } catch (error) {
+        return data;
+      }
+    },
+  ],
 });
 
 // 添加请求拦截器

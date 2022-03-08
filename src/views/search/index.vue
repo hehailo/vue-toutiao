@@ -2,7 +2,7 @@
   <div class="search-container">
     <!-- 搜索栏 -->
     <!-- Tips: 在 van-search 外层增加 form 标签，且 action 不为空，即可在 iOS 输入法【键盘】中显示搜索按钮。 -->
-    <form action="/">
+    <form class="search-form" action="/">
       <!-- 
         search 事件在点击键盘上的搜索/回车按钮后触发
         background 属性可以设置搜索框外部的背景色
@@ -31,7 +31,12 @@
     ></SearchSuggestion>
 
     <!-- 历史记录 -->
-    <SearchHistory v-else></SearchHistory>
+    <SearchHistory
+      v-else
+      :searchHistories="searchHistories"
+      @search="onSearch"
+      @update-histories="searchHistories = $event"
+    ></SearchHistory>
   </div>
 </template>
 
@@ -54,11 +59,22 @@ export default {
     SearchResult,
     SearchSuggestion,
   },
+  watch: {
+    searchHistories(val) {
+      setItem("TOUTIAO_SEARCH_HISTORIES", val);
+    },
+  },
   methods: {
     onSearch(val) {
       // 从搜索联想跳转过来 输入框回显
       this.searchText = val;
       console.log("search", val);
+      let index = this.searchHistories.indexOf(val);
+      if (index != -1) {
+        // 存入搜索历史的记录不可以重复，冲去就去掉重新把它加载最前面
+        this.searchHistories.splice(index, 1);
+      }
+      this.searchHistories.unshift(val);
       this.isResultShow = true;
     },
     onCancel() {
@@ -70,10 +86,17 @@ export default {
 
 <style scoped lang="less">
 .search-container {
-  //   padding-top: 108px;
-  .van-search__action {
-    //搜索框文字颜色
-    color: #fff;
+  padding-top: 108px;
+  .search-form {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    .van-search__action {
+      //搜索框文字颜色
+      color: #fff;
+    }
   }
 }
 </style>

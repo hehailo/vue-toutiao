@@ -4,9 +4,15 @@
       v-model="loading"
       :finished="finished"
       finished-text="没有更多了"
+      :error.sync="error"
+      error-text="请求失败，点击重新加载"
       @load="onLoad"
     >
-      <van-cell v-for="(article,index) in list" :key="index" :title="article.title" />
+      <van-cell
+        v-for="(article, index) in list"
+        :key="index"
+        :title="article.title"
+      />
     </van-list>
   </div>
 </template>
@@ -50,11 +56,15 @@ export default {
           per_page: this.perPage, // 每页大小
           q: this.searchText, // 查询关键词
         });
-        console.log(result);
         // 填入数据
         let { results } = result.data;
         this.list.push(...results);
-        console.log(this.list);
+        
+        // 模拟随机失败的情况
+        if (Math.random() > 0.9) {
+          JSON.parse("fsfsf");
+        }
+
         //关闭转圈
         this.loading = false;
         // 判断是否还有数据
@@ -66,6 +76,7 @@ export default {
       } catch (error) {
         // 加载失败了 loading 也要关闭
         this.loading = false;
+        this.error = true
       }
     },
   },

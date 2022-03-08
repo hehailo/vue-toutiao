@@ -69,7 +69,7 @@ export default {
         let { results, pre_timestamp } = data;
 
         // 模拟随机失败的情况
-        if (Math.random() > 0.8) {
+        if (Math.random() > 0.9) {
           JSON.parse("fsfsf");
         }
 
@@ -106,7 +106,7 @@ export default {
         let { results } = data;
 
         // 模拟随机失败的情况
-        if (Math.random() > 0.8) {
+        if (Math.random() > 0.9) {
           JSON.parse("fsfsf");
         }
         console.log(data.results);

@@ -10,6 +10,8 @@ import 'amfe-flexible'
 
 // 引入dayjs
 import '@/utils/dayjs'
+//
+import './api/jsonBig'
 
 // 引入vant
 import { Form } from 'vant';
@@ -29,7 +31,11 @@ import { List } from 'vant';
 import { PullRefresh } from 'vant';
 import { Popup } from 'vant';
 import { Search } from 'vant';
+import { Loading } from 'vant';
+import { Divider } from 'vant';
 
+Vue.use(Divider);
+Vue.use(Loading);
 Vue.use(Search);
 Vue.use(Popup);
 Vue.use(PullRefresh);

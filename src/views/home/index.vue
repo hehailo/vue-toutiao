@@ -98,7 +98,7 @@ export default {
           // 已登录，请求获取用户频道列表
           let { data } = await getUserChannels();
           console.log("已登录", data);
-          this.channels = data.channels;
+          channels = data.channels;
         } else {
           // 未登录，判断是否有本地的频道列表数据
           const localChannels = getItem("TOUTIAO_CHANNELS");
