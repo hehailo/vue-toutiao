@@ -92,8 +92,46 @@ vuex+localStorage
     数据读取服务器
 
 ##  优化防抖
+  https://www.lodashjs.com/docs/lodash.chunk
 
+    该函数会从上一次被调用后，延迟 wait 毫秒后调用 func 方法
 
+    防抖：
+      在事件被触发n秒后再执行回调，如果在这n秒内又被触发，则重新计时
+      个人理解 函数防抖就是法师发技能的时候要读条，技能读条没完再按技能就会重新读条。
+    函数节流(throttle)
+      规定在一个单位时间内，只能触发一次函数。如果这个单位时间内触发多次函数，只有一次生效。
+      个人理解 函数节流就是fps游戏的射速，就算一直按着鼠标射击，也只会在规定射速内射出子弹。
+   
+   
+  debounce
+      search搜索联想，用户在不断输入值时，用防抖来节约请求资源。
+      window触发resize的时候，不断的调整浏览器窗口大小会不断的触发这个事件，用防抖来让其只触发一次
 
+  throttle
+      鼠标不断点击触发，mousedown(单位时间内只触发一次)
+      监听滚动事件，比如是否滑到底部自动加载更多，用throttle来判断
 
+      作者：薄荷前端
+      链接：https://juejin.cn/post/6844903669389885453
 
+## 搜索关键字高亮
+  用v-html展示
+
+  方法1 replace + 正则//gi
+    g是全局
+    i是忽略大小写
+
+    highlight (text) {
+      const highlightStr = `<span class="active">${this.searchText}</span>`
+
+      // 正则表达式 // 中间的内容都会当作匹配字符来使用，而不是数据变量
+      // 如果需要根据数据变量动态的创建正则表达式，则手动 new RegExp
+      // RegExp 正则表达式构造函数
+      //    参数1：匹配模式字符串，它会根据这个字符串创建正则对象
+      //    参数2：匹配模式，要写到字符串中
+      const reg = new RegExp(this.searchText, 'gi')
+      return text.replace(reg, highlightStr)
+    }
+
+  方法2 split + join

@@ -21,10 +21,14 @@
       />
     </form>
     <!-- 搜索结果 -->
-    <SearchResult v-if="isResultShow"></SearchResult>
+    <SearchResult v-if="isResultShow" :searchText="searchText"></SearchResult>
 
     <!-- 联想记忆 -->
-    <SearchSuggestion v-else-if="searchText" :searchText="searchText"></SearchSuggestion>
+    <SearchSuggestion
+      @search="onSearch"
+      v-else-if="searchText"
+      :searchText="searchText"
+    ></SearchSuggestion>
 
     <!-- 历史记录 -->
     <SearchHistory v-else></SearchHistory>
@@ -52,8 +56,10 @@ export default {
   },
   methods: {
     onSearch(val) {
-        console.log("search",val);
-        this.isResultShow=true
+      // 从搜索联想跳转过来 输入框回显
+      this.searchText = val;
+      console.log("search", val);
+      this.isResultShow = true;
     },
     onCancel() {
       this.$router.back();

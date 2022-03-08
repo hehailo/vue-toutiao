@@ -5,20 +5,24 @@
        -->
     <van-cell
       icon="search"
-      :title="suggestion"
       v-for="(suggestion, index) in suggestions"
       :key="index"
-    ></van-cell>
+      @click="$emit('search',suggestion)"
+    >
+      <span slot="title" v-html="highlightKeyWord(suggestion)"></span>
+      <span class="active"> </span>
+    </van-cell>
   </div>
 </template>
 
 <script>
 import { getSearchSuggestions } from "@/api/search";
+import { debounce } from "lodash";
 export default {
   name: "SearchSuggestion",
   data() {
     return {
-      suggestions: [],
+      suggestions: [], // 联想建议数据列表
     };
   },
   props: {
@@ -30,9 +34,12 @@ export default {
   watch: {
     searchText: {
       immediate: true, //该回调将会在侦听开始之后被立即调用
-      handler(newVal, oldVal) {
+      handler: debounce(function (newVal, oldVal) {
         this.loadSearchSuggestions(newVal);
-      },
+      }, 200),
+      // handler(newVal, oldVal) {
+      //   this.loadSearchSuggestions(newVal);
+      // },
     },
   },
   methods: {
@@ -44,9 +51,21 @@ export default {
         this.$toast("数据获取失败，请稍后重试");
       }
     },
+    highlightKeyWord(text) {
+      if (text) {
+        let highlight = `<span class="active">${this.searchText}</span>`;
+        let reg = new RegExp(this.searchText, "gi");
+        return text.replace(reg, highlight);
+      }
+    },
   },
 };
 </script>
 
-<style scoped>
+<style scoped lang="less">
+.search-suggestion {
+  /deep/ .active {
+ color: #3296fa;
+  }
+}
 </style>
