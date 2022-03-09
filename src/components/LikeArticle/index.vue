@@ -1,3 +1,4 @@
+<!--  点赞文章  -->
 <template>
   <van-button
     :icon="value === 1 ? 'good-job' : 'good-job-o'"

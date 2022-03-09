@@ -1,3 +1,4 @@
+<!--  关注作者  -->
 <template>
   <van-button
     v-if="isFollowed"

@@ -76,9 +76,10 @@
         <div class="article-content" v-html="article.content"></div>
         <van-divider>正文结束</van-divider>
 
-        <!-- 评论区域 -->
+        <!-- 评论展示区域 -->
         <CommentList
           :source="article.art_id"
+          ref="commentList"
           @onload-success="totalCommentCount = $event.total_count"
         ></CommentList>
 
@@ -116,13 +117,12 @@
         <!-- /底部区域 -->
 
         <!-- 评论弹出层/发布评论 -->
-        <van-popup
-          v-model="isReplyShow"
-          position="bottom"
-          >
-          <CommentPost></CommentPost>
-          </van-popup
-        >
+        <van-popup v-model="isReplyShow" position="bottom">
+          <CommentPost
+            @post-success="onPostSuccess"
+            :target="article.art_id"
+          ></CommentPost>
+        </van-popup>
       </div>
       <!-- /加载完成-文章详情 -->
 
@@ -152,10 +152,16 @@ import FollowUser from "@/components/FollowUser";
 import CollectArticle from "@/components/CollectArticle";
 import LikeArticle from "@/components/LikeArticle";
 import CommentList from "./components/CommentList.vue";
-import CommentPost from './components/CommentPost.vue'
+import CommentPost from "./components/CommentPost.vue";
 export default {
   name: "Article",
-  components: { FollowUser, CollectArticle, LikeArticle, CommentList,CommentPost },
+  components: {
+    FollowUser,
+    CollectArticle,
+    LikeArticle,
+    CommentList,
+    CommentPost,
+  },
   props: {
     articleId: {
       type: [Number, String, Object],
@@ -232,30 +238,14 @@ export default {
         };
       });
     },
-
-    // async onFollow() {
-    //   this.followLoading = true;
-    //   try {
-    //     if (this.article.is_followed) {
-    //       //已关注 取消关注
-    //       let result = await deleteFollow(this.article.aut_id);
-    //       console.log(result);
-    //     } else {
-    //       //未关注 关注
-    //       let result = await addFollow(this.article.aut_id);
-    //       console.log(result);
-    //     }
-    //     this.article.is_followed = !this.article.is_followed;
-    //   } catch (error) {
-    //     let message = "操作失败！";
-
-    //     if (error.response && error.response.status === 400) {
-    //       message = "自己不能关注自己";
-    //     }
-    //     this.$toast(message);
-    //   }
-    //   this.followLoading = false;
-    // },
+    onPostSuccess(data) {
+      // 隐藏弹出层
+      this.isReplyShow = false;
+      //更新评论列表
+      this.$refs.commentList.list.unshift(data.new_obj);
+      //更新评论总数
+      this.totalCommentCount++
+    },
   },
 };
 </script>

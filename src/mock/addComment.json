@@ -1,0 +1,20 @@
+{
+    "data": {
+        "target": "8117",
+        "art_id": null,
+        "com_id": "58e347e3-1a19-42b3-b12a-025f830f02b3",
+        "new_obj": {
+            "com_id": "58e347e3-1a19-42b3-b12a-025f830f02b3",
+            "aut_id": "1111",
+            "pubdate": "2022-03-09 17:08:11",
+            "content": "测试",
+            "is_top": 0,
+            "aut_name": "zouyumei",
+            "aut_photo": "http://toutiao.itheima.net/images/user_head.jpg",
+            "like_count": 0,
+            "reply_count": 0,
+            "is_liking": false
+        }
+    },
+    "message": "OK"
+}

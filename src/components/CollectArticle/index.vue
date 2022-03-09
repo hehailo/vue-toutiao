@@ -32,14 +32,16 @@ export default {
     async onCollect() {
       this.loading = true;
       //发送请求
+      let result;
       try {
         if (this.value) {
           //取消收藏
-          let result = await deleteCollect(this.articleId);
+           result = await deleteCollect(this.articleId);
         } else {
           //添加收藏
-          let result = await addCollect(this.articleId);
+           result = await addCollect(this.articleId);
         }
+        console.log("收藏",result);
         this.$emit("input",!this.value);
         this.$toast.success(!this.value ? '收藏成功' : '取消收藏')
       } catch (error) {

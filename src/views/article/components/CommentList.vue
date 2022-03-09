@@ -1,3 +1,4 @@
+<!-- 评论列表 -->
 <template>
   <van-list
     v-model="loading"
@@ -37,6 +38,10 @@ export default {
       type: [Number, String, Object],
       required: true,
     },
+    // list: {
+    //   type: Array,
+    //   default: () => [],
+    // },
   },
   created() {
     this.onLoad(); //初始化加载

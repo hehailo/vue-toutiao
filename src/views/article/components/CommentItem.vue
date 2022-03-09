@@ -1,3 +1,4 @@
+<!-- 单条评论 -->
 <template>
   <van-cell class="comment-item">
     <!-- icon	自定义左侧图标 -->
@@ -72,9 +73,9 @@ export default {
         }
         this.comment.is_liking = !this.comment.is_liking;
       } catch (err) {
-          let message= "操作失败，请重试"
-        if(err.response && err.response.status === 401){
-            message = "用户未认证"
+        let message = "操作失败，请重试";
+        if (err.response && err.response.status === 401) {
+          message = "用户未认证";
         }
         this.$toast(message);
       }
