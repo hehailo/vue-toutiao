@@ -81,7 +81,8 @@ export default {
 
         // 4. 判断数据是否全部加载完成
         console.log(results.length);
-        if (results.length && this.list.length <= 40) {
+        // if (results.length && this.list.length <= 40) {
+        if (results.length) {
           // 有数据
           this.timestamp = pre_timestamp;
         } else {

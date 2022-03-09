@@ -17,7 +17,7 @@ module.exports = {
       // rootValue: 37.5,
       //* 表示所有
       propList: ['*'],
-      // exclude:'github-markdown'
+      exclude:'github-markdown'
     }
   }
 }

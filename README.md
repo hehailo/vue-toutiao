@@ -135,3 +135,91 @@ vuex+localStorage
     }
 
   方法2 split + join
+
+
+## 文章正文样式的处理
+
+ github-markdown
+    引入这个样式 https://github.com/sindresorhus/github-markdown-css
+    
+    点击row 赋值源文件
+
+    class="article-detail markdown-body"
+
+ postcss-pxtorem
+
+    https://github.com/cuth/postcss-pxtorem 排除掉这个css 不使得他适应移动端
+
+    exclude (String, Regexp, Function) The file path to ignore and leave as px.
+        If value is string, it checks to see if file path contains the string.
+        'exclude' will match \project\postcss-pxtorem\exclude\path
+        If value is regexp, it checks to see if file path matches the regexp.
+        /exclude/i will match \project\postcss-pxtorem\exclude\path
+        If value is function, you can use exclude function to return a true and the file will be ignored.
+        the callback will pass the file path as a parameter, it should returns a Boolean result.
+        function (file) { return file.indexOf('exclude') !== -1; }
+
+    exclude:'github-markdown'
+
+## 图片点击预览
+
+
+    ImagePreview({
+      images: [
+        'https://img01.yzcdn.cn/vant/apple-1.jpg',
+        'https://img01.yzcdn.cn/vant/apple-2.jpg',
+      ],
+      startPosition: 1,
+      onClose() {
+        console.log('关闭');
+      },
+    })
+
+## 给组件添加的样式 会默认作用到根节点
+
+
+## props修改
+    Prop 数据
+     Prop 是受父组件数据影响的
+       如果是普通数据（数字、字符串、布尔值）绝对不能修改
+       即便改了也不会传导给父组件
+    
+       如果是引用类型数据（数组、对象）
+           可以修改，例如 [].push(xxx)，对象.xxx = xxx
+           不能重新赋值, xxx = []
+
+## 组件标签上的v-model
+
+默认
+    模板中的 $event 是事件参数
+    当我们传递给子组件的数据既要使用还要修改。
+      传递：props
+        :is-followed="article.is_followed"
+      修改：自定义事件
+        @update-is_followed="article.is_followed = $event"
+
+
+    简写方式：在组件上使用 v-model
+     理解： v-model相当于： 
+          value="article.is_followed"
+          @input="article.is_followed = $event"
+    子组件接收
+          1、props里面用value作为名称接收
+          2、子组件修改使用 $emit("input",xxxxx)
+  
+
+    如果需要修改 v-model 的规则名称，可以通过子组件的 model 属性来配置修改
+      自定义名称
+      model: {
+        prop: 'isFollowed', // 默认是 value
+        event: 'update-is_followed' // 默认是 input
+      },
+      props用isFollowed接收
+      事件触发用 update-is_followed
+
+    一个组件上只能使用一次 v-model，
+        如果有多个数据需要实现类似于 v-model 的效果，咋办？
+        可以使用属性的 .sync 修饰符。
+
+## 有评论数据
+http://localhost:8080/#/article/8046

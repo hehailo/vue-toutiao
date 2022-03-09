@@ -9,3 +9,9 @@ console.log(JSONBig.parse(jsonStr).art_id.toString());//1245953273789007552
 
 console.log(JSON.stringify(JSONBig.parse(jsonStr))); //{"art_id":"1245953273789007552"}
 console.log(JSONBig.stringify(JSONBig.parse(jsonStr))); //{"art_id":1245953273789007552}
+
+
+        // // 模拟随机失败的情况
+        // if (Math.random() > 0.9) {
+        //     JSON.parse("fsfsf");
+        //   }
